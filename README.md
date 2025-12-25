@@ -1,4 +1,4 @@
-# Manfaah
+# Manfaa
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -12,11 +12,11 @@
 
 ## Introduction
 
-Manfaah is a service exchange platform that enables small businesses and startups to trade professional services using time-based credits instead of cash.
+Manfaa is a service exchange platform that enables small businesses and startups to trade professional services using time-based credits instead of cash.
 
 Early-stage companies often need essential services such as legal support, accounting, marketing, design, or IT—but limited cash flow makes traditional payments difficult. At the same time, these businesses possess valuable skills and expertise that other companies need.
 
-Manfaah creates a structured, trusted environment where businesses can exchange services fairly, track obligations, and build reputation—turning time and expertise into a usable currency.
+Manfaa creates a structured, trusted environment where businesses can exchange services fairly, track obligations, and build reputation—turning time and expertise into a usable currency.
 
 ## Problem Statement
 
