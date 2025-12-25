@@ -20,7 +20,7 @@ public class ServiceBid {
     private String description;
     @Column(columnDefinition = "text not null Check(Length(notes)<=500)")
     private String notes;
-    @Column(columnDefinition = "text not null Check(Length(deliverables)<=500))")
+    @Column(columnDefinition = "text not null Check(Length(deliverables)<=500)")
     private String deliverables;
     @Column(name = "estimated_hours", columnDefinition = "double not null")
     private Double estimatedHours;

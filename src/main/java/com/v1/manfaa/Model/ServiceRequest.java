@@ -20,7 +20,7 @@ public class ServiceRequest {
     private Integer id;
     @Column(columnDefinition = "text not null Check(Length(description)<=500)")
     private String description;
-    @Column(columnDefinition = "text not null Check(Length(deliverables)<=500))")
+    @Column(columnDefinition = "text not null Check(Length(deliverables)<=500)")
     private String deliverables;
     @Column(name = "proposed_start_date", columnDefinition = "date not null")
     private LocalDate proposedStartDate;
