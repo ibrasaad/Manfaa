@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Entity
@@ -26,8 +27,9 @@ public class Review {
     @Column(columnDefinition = "text not null")
     private String description;
 
-    @Column(columnDefinition = "Date not null")
-    private LocalDate created_at;
+    @Column(columnDefinition = "timestamp not null")
+    private LocalDateTime created_at;
+
 
    // @ManyToOne
    // @JsonIgnore
