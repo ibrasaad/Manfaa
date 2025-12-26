@@ -1,0 +1,29 @@
+package com.v1.manfaa.Model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class CompanyCredit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(columnDefinition = "int default 0")
+    private Integer balance;
+
+    @Column(name = "total_spent", columnDefinition = "int default 0")
+    private Integer totalSpent;
+
+    @Column(name = "total_earned", columnDefinition = "int default 0")
+    private Integer totalEarned;
+
+}
