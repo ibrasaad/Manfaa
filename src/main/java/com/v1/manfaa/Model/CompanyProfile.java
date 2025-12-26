@@ -41,11 +41,21 @@ public class CompanyProfile {
 //    @MapsId
 //    private User user;
 
+    // relationships
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyProfile")
     private Set<Subscription> subscriptions;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyProfile")
     private Set<Ticket> tickets;
 
+
+    @OneToMany(mappedBy = "companyProfile")
+    private Set<ServiceRequest> serviceRequest;
+    @OneToMany(mappedBy = "companyProfile")
+    private Set<ServiceBid> serviceBid;
+    @OneToMany(mappedBy = "providerCompanyProfile" )
+    private Set<ContractAgreement> providerContractAgreement;
+    @OneToMany(mappedBy = "requesterCompanyProfile")
+    private CompanyProfile requesterContractAgreement;
 
 }

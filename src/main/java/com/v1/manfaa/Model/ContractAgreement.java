@@ -43,4 +43,24 @@ public class ContractAgreement {
     @OneToOne(mappedBy = "contractAgreement")
     @JsonIgnore
     private CreditTransaction creditTransaction;
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "service_request_id")
+    private ServiceRequest serviceRequest;
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "service_bid_id")
+    private ServiceBid serviceBid;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "provider_company_id", nullable = false)
+    private CompanyProfile providerCompanyProfile;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "requester_company_id", nullable = false)
+    private CompanyProfile requesterCompanyProfile;
 }

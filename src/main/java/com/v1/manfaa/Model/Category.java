@@ -1,7 +1,10 @@
 package com.v1.manfaa.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @Entity
@@ -20,4 +23,10 @@ public class Category {
 
     private String description;
 
+//    @OneToMany(mappedBy = "category")
+//    private Set<CompanyProfile> companyProfiles;
+    @OneToMany(mappedBy = "category")
+    private Set<ServiceRequest> serviceRequest;
+    @OneToMany(mappedBy = "barterCategory")
+    private Set<ServiceRequest> barterServiceRequest;
 }
