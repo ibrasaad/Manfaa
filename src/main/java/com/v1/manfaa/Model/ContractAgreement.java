@@ -1,5 +1,6 @@
 package com.v1.manfaa.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,4 +36,11 @@ public class ContractAgreement {
     private LocalDateTime createdAt;
     @Column(name = "closed_at", columnDefinition = "timestamp")
     private LocalDateTime closedAt;
+
+    @OneToMany(mappedBy = "contractAgreement")
+    private Set<Ticket> tickets;
+
+    @OneToOne(mappedBy = "contractAgreement")
+    @JsonIgnore
+    private CreditTransaction creditTransaction;
 }

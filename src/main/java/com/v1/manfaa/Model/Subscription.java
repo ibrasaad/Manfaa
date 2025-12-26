@@ -1,5 +1,6 @@
 package com.v1.manfaa.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,8 @@ public class Subscription {
     @Column(columnDefinition = "boolean not null")
     private Boolean isActive;
 
-    //company_id
+    @ManyToOne
+    @JsonIgnore
+    private CompanyProfile companyProfile;
 
 }
