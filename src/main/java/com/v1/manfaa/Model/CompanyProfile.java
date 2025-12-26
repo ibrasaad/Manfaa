@@ -56,6 +56,6 @@ public class CompanyProfile {
     @OneToMany(mappedBy = "providerCompanyProfile" )
     private Set<ContractAgreement> providerContractAgreement;
     @OneToMany(mappedBy = "requesterCompanyProfile")
-    private CompanyProfile requesterContractAgreement;
+    private Set<ContractAgreement> requesterContractAgreement;
 
 }
