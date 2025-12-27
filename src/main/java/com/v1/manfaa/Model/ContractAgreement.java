@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,20 +36,34 @@ public class ContractAgreement {
     private LocalDateTime createdAt;
     @Column(name = "closed_at", columnDefinition = "timestamp")
     private LocalDateTime closedAt;
+
+    @OneToMany(mappedBy = "contractAgreement")
+    private Set<Ticket> tickets;
+
+    @OneToOne(mappedBy = "contractAgreement")
+    @JsonIgnore
+    private CreditTransaction creditTransaction;
+
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "service_request_id")
     private ServiceRequest serviceRequest;
+
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "service_bid_id")
     private ServiceBid serviceBid;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "provider_company_id", nullable = false)
     private CompanyProfile providerCompanyProfile;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "requester_company_id", nullable = false)
     private CompanyProfile requesterCompanyProfile;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "contractAgreement")
+    private Set<Review> reviews;
 }

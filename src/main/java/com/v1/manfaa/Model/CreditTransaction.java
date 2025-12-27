@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class CreditTransaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(columnDefinition = "double not null")
@@ -25,5 +24,16 @@ public class CreditTransaction {
     @Column(name = "created_at", columnDefinition = "timestamp not null")
     private LocalDateTime createdAt;
 
+    @OneToOne
+    @JoinColumn(name = "contract_agreement_id", nullable = false, unique = true)
+    private ContractAgreement contractAgreement;
+
+    @ManyToOne
+    @JoinColumn(name = "paying_company_id", nullable = false)
+    private CompanyCredit payingCompany;
+
+    @ManyToOne
+    @JoinColumn(name = "paid_company_id", nullable = false)
+    private CompanyCredit paidCompany;
 
 }

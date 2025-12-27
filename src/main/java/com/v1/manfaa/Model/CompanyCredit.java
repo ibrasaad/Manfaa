@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Setter
 @Getter
 @Entity
@@ -25,5 +27,11 @@ public class CompanyCredit {
 
     @Column(name = "total_earned", columnDefinition = "int default 0")
     private Integer totalEarned;
+
+    @OneToMany(mappedBy = "payingCompany")
+    private Set<CreditTransaction> outgoingTransactions;
+
+    @OneToMany(mappedBy = "paidCompany")
+    private Set<CreditTransaction> incomingTransactions;
 
 }

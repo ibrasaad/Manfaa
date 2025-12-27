@@ -1,5 +1,6 @@
 package com.v1.manfaa.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,5 +41,14 @@ public class Ticket {
 
     @Column(columnDefinition = "varchar(20) not null check(status = 'OPEN' or status = 'IN_REVIEW' or status = 'RESOLVED' or status = 'CLOSED')")
     private String status;
+
+    @ManyToOne
+    @JsonIgnore
+    private CompanyProfile companyProfile;
+
+    @ManyToOne
+    @JsonIgnore
+    private ContractAgreement contractAgreement;
+
 
 }
