@@ -4,6 +4,7 @@ import com.v1.manfaa.Api.ApiException;
 import com.v1.manfaa.DTO.In.ServiceBidDTOIn;
 import com.v1.manfaa.DTO.Out.ServiceBidDTOOut;
 import com.v1.manfaa.Model.CompanyProfile;
+import com.v1.manfaa.Model.ContractAgreement;
 import com.v1.manfaa.Model.ServiceBid;
 import com.v1.manfaa.Model.ServiceRequest;
 import com.v1.manfaa.Repository.CategoryRepository;
@@ -13,6 +14,7 @@ import com.v1.manfaa.Repository.ServiceRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +111,51 @@ public class ServiceBidService {
         serviceBidRepository.delete(bid);
     }
 
-    //Todo: accept reject logic
+    public void acceptServiceBid(Integer serviceBidId, Integer userId){
+        CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(userId);
+        ServiceBid serviceBid = serviceBidRepository.findServiceBidById(serviceBidId);
+
+        if(companyProfile == null || serviceBid == null ||
+                !serviceBid.getServiceRequest().getCompanyProfile().getId().equals(userId)){
+            throw new ApiException("service bid not found");
+        }
+        ServiceRequest serviceRequest = serviceBid.getServiceRequest();
+        if(!serviceRequest.getStatus().equalsIgnoreCase("OPEN")
+                || !serviceBid.getStatus().equalsIgnoreCase("PENDING")){
+            throw new ApiException("service bid or request is already closed");
+        }
+
+        // if needed, create the auto contract here
+
+        serviceRequest.setStatus("CLOSED");
+        serviceBid.setStatus("ACCEPTED");
+        serviceRequestRepository.save(serviceRequest);
+        serviceBidRepository.save(serviceBid);
+
+
+
+    }
+
+    public void rejectServiceBid(Integer serviceBidId, Integer userId){
+        CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(userId);
+        ServiceBid serviceBid = serviceBidRepository.findServiceBidById(serviceBidId);
+
+        if(companyProfile == null || serviceBid == null ||
+                !serviceBid.getServiceRequest().getCompanyProfile().getId().equals(userId)){
+            throw new ApiException("service bid not found");
+        }
+        ServiceRequest serviceRequest = serviceBid.getServiceRequest();
+        if(!serviceRequest.getStatus().equalsIgnoreCase("OPEN")
+                || !serviceBid.getStatus().equalsIgnoreCase("PENDING")){
+            throw new ApiException("service bid or request is already closed");
+        }
+
+        serviceBid.setStatus("REJECTED");
+        serviceBidRepository.save(serviceBid);
+
+
+
+    }
 
 
     public ServiceBid convertToEntity(ServiceBidDTOIn dtoIn){

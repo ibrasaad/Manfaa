@@ -66,11 +66,15 @@ public class Configuration {
 
                         // admin endpoints
                         .requestMatchers("/api/v1/service-request/get-requests").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/service-bid/get-all").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/company/get-all","/api/v1/company/get-companies-full").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/contract/get-all").hasAuthority("ADMIN")
 
                         // company endpoints
                         .requestMatchers("/api/v1/service-request/create-request").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/company/**").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/service-bid/**").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/contract/**").hasAuthority("COMPANY")
 
                         // subscription endpoints
                         .requestMatchers("/api/v1/subscriptions/**").hasAuthority("COMPANY")

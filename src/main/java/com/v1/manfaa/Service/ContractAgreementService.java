@@ -158,6 +158,8 @@ public class ContractAgreementService {
             contractAgreement.setFirstPartyAgreement("REJECTED");
         }
         contractAgreement.setStatus("CANCELLED");
+        contractAgreement.getServiceRequest().setStatus("OPEN");
+        serviceRequestRepository.save(contractAgreement.getServiceRequest());
         contractAgreementRepository.save(contractAgreement);
     }
 
