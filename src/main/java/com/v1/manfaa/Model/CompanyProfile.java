@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -33,14 +34,14 @@ public class CompanyProfile {
     private String description;
 
     @Column(name = "created_at", columnDefinition = "timestamp not null")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "is_subscriber", columnDefinition = "boolean not null")
-    private boolean isSubscriber;
+    private Boolean isSubscriber;
 
     @OneToOne
-    @MapsId
-  private User user;
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "companyProfile")
     private Set<Skills> skills;
@@ -52,6 +53,10 @@ public class CompanyProfile {
     @OneToMany(mappedBy = "reviewedProfile")
     @JsonIgnore
     private Set<Review> receivedReviews;
+
+    @OneToOne
+    @MapsId
+    private CompanyCredit companyCredit;
 
 
 
