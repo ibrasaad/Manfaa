@@ -15,6 +15,7 @@ import com.v1.manfaa.Repository.ServiceRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -264,7 +265,128 @@ public class ServiceRequestService {
     }
 
 
+    public List<ServiceRequestDTOOut> getServiceRequestsByCategory(Integer categoryId) {
+        Category category = categoryRepository.findCategoryById(categoryId);
 
+        if (category == null) {
+            throw new ApiException("Category not found");
+        }
+
+        List<ServiceRequest> requests =
+                serviceRequestRepository.findServiceRequestsByCategoryId(categoryId);
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found for this category");
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getServiceRequestsByExchangeType(String exchangeType) {
+        if (!exchangeType.equalsIgnoreCase("TOKENS") &&
+                !exchangeType.equalsIgnoreCase("BARTER") &&
+                !exchangeType.equalsIgnoreCase("EITHER")) {
+            throw new ApiException("Invalid exchange type. Must be TOKENS, BARTER, or EITHER");
+        }
+
+        List<ServiceRequest> requests =
+                serviceRequestRepository.findServiceRequestsByExchangeType(exchangeType.toUpperCase());
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found with exchange type: " + exchangeType);
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getServiceRequestsByDateRange(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new ApiException("Start date and end date cannot be null");
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new ApiException("Start date cannot be after end date");
+        }
+
+        List<ServiceRequest> requests =
+                serviceRequestRepository.findServiceRequestsByProposedDateRange(startDate, endDate);
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found within the specified date range");
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getServiceRequestsByTokenRange(Double minAmount, Double maxAmount) {
+        if (minAmount == null || maxAmount == null) {
+            throw new ApiException("Minimum and maximum token amounts cannot be null");
+        }
+
+        if (minAmount < 0 || maxAmount < 0) {
+            throw new ApiException("Token amounts cannot be negative");
+        }
+
+        if (minAmount > maxAmount) {
+            throw new ApiException("Minimum amount cannot be greater than maximum amount");
+        }
+
+        List<ServiceRequest> requests =
+                serviceRequestRepository.findServiceRequestsByTokenAmountRange(minAmount, maxAmount);
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found within the specified token range");
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getServiceRequestsSortedByTokenAmount(String order) {
+        List<ServiceRequest> requests;
+
+        if (order == null || order.trim().isEmpty()) {
+            throw new ApiException("Sort order cannot be empty. Use 'ASC' or 'DESC'");
+        }
+
+        if (order.equalsIgnoreCase("ASC")) {
+            requests = serviceRequestRepository.findAllByOrderByTokenAmountAsc();
+        } else if (order.equalsIgnoreCase("DESC")) {
+            requests = serviceRequestRepository.findAllByOrderByTokenAmountDesc();
+        } else {
+            throw new ApiException("Invalid sort order. Use 'ASC' or 'DESC'");
+        }
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found");
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
 
 
     public List<ServiceRequestDTOOut> getOpenServiceRequestOfCompany(Integer companyid){
