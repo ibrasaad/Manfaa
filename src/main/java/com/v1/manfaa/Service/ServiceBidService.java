@@ -107,7 +107,7 @@ public class ServiceBidService {
         serviceBidRepository.delete(bid);
     }
 
-    // accept reject logic
+    //Todo: accept reject logic
 
 
     public ServiceBid convertToEntity(ServiceBidDTOIn dtoIn){

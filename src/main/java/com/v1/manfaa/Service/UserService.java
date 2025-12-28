@@ -37,7 +37,7 @@ public class UserService {
     public void addUser(UserDTOIn userDtoIn){
         String hash = new BCryptPasswordEncoder().encode(userDtoIn.getPassword());
         User user = new User(null, userDtoIn.getUsername(), hash, userDtoIn.getEmail(), userDtoIn.getFullName(), userDtoIn.getPhone_Number(),
-                "STARTUP",null);
+                "COMPANY",null);
 
         userRepository.save(user);
 
@@ -52,7 +52,7 @@ public class UserService {
            throw new ApiException("User not found");
        }
        old.setUsername(userDtoIn.getUsername());
-       old.setRole("STARTUP");
+       old.setRole("COMPANY");
        old.setPhone_Number(userDtoIn.getPhone_Number());
        old.setPassword(hash);
        old.setFullName(userDtoIn.getFullName());
