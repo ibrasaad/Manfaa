@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class SubscriptionDTOOut {
 
-    private Integer id;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isActive;
