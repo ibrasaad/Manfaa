@@ -47,6 +47,10 @@ public class ServiceRequestService {
             throw new ApiException("category not found");
         }
 
+        if(companyProfile.getCompanyCredit().getBalance() < dtoIn.getTokenAmount()){
+            throw new ApiException("not enough credit");
+        }
+
         ServiceRequest serviceRequest = convertToEntity(dtoIn);
 
         serviceRequest.setCategory(category);
@@ -149,8 +153,61 @@ public class ServiceRequestService {
         serviceRequestRepository.delete(serviceRequest);
     }
 
+    public void createBarterRequest(ServiceRequestDTOIn dtoIn, Integer id){
+        CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(id);
+        Category category = categoryRepository.findCategoryById(dtoIn.getCategory());
 
-    //Todo: add logic for barter and either
+        if(companyProfile == null){
+            throw new ApiException("company not found");
+        }
+
+        if(category == null){
+            throw new ApiException("category not found");
+        }
+
+        ServiceRequest serviceRequest = convertToEntity(dtoIn);
+
+        serviceRequest.setCategory(category);
+        serviceRequest.setCompanyProfile(companyProfile);
+        serviceRequest.setExchangeType("BARTER");
+        serviceRequest.setCreatedAt(LocalDateTime.now());
+        serviceRequest.setStatus("OPEN");
+        category.getServiceRequest().add(serviceRequest);
+        companyProfile.getServiceRequest().add(serviceRequest);
+
+        companyProfileRepository.save(companyProfile);
+        categoryRepository.save(category);
+        serviceRequestRepository.save(serviceRequest);
+    }
+
+    public void createEitherRequest(ServiceRequestDTOIn dtoIn, Integer id){
+        CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(id);
+        Category category = categoryRepository.findCategoryById(dtoIn.getCategory());
+
+        if(companyProfile == null){
+            throw new ApiException("company not found");
+        }
+
+        if(category == null){
+            throw new ApiException("category not found");
+        }
+
+        ServiceRequest serviceRequest = convertToEntity(dtoIn);
+
+        serviceRequest.setCategory(category);
+        serviceRequest.setCompanyProfile(companyProfile);
+        serviceRequest.setExchangeType("EITHER");
+        serviceRequest.setCreatedAt(LocalDateTime.now());
+        serviceRequest.setStatus("OPEN");
+        category.getServiceRequest().add(serviceRequest);
+        companyProfile.getServiceRequest().add(serviceRequest);
+
+        companyProfileRepository.save(companyProfile);
+        categoryRepository.save(category);
+        serviceRequestRepository.save(serviceRequest);
+    }
+
+
 
     public List<ServiceRequestAndBidDTOOut> getAllRequestWithBids(){
         List<ServiceRequestAndBidDTOOut> dtoOuts = new ArrayList<>();
@@ -166,6 +223,105 @@ public class ServiceRequestService {
             throw new ApiException("no request found");
         }
         return convertToFullDTOOut(request);
+    }
+
+    public List<ServiceRequestDTOOut> getServiceRequestOfCompany(Integer companyid){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+
+        if (company == null)
+            throw new ApiException("company not found");
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request: serviceRequestRepository.findServiceRequestsByCompanyProfile(company)) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        if(dtoOuts.isEmpty()){
+            throw new ApiException("no requests found");
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> searchServiceRequests(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new ApiException("Search keyword cannot be empty");
+        }
+
+        List<ServiceRequest> requests =
+                serviceRequestRepository.searchServiceRequestsByKeyword(keyword.trim());
+
+        if (requests.isEmpty()) {
+            throw new ApiException("No service requests found matching the keyword: " + keyword);
+        }
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request : requests) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        return dtoOuts;
+    }
+
+
+
+
+
+    public List<ServiceRequestDTOOut> getOpenServiceRequestOfCompany(Integer companyid){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+
+        if (company == null)
+            throw new ApiException("company not found");
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request:
+                serviceRequestRepository.findServiceRequestsByCompanyProfileAndStatus(company, "OPEN")) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        if(dtoOuts.isEmpty()){
+            throw new ApiException("no requests found");
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getClosedServiceRequestOfCompany(Integer companyid){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+
+        if (company == null)
+            throw new ApiException("company not found");
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request:
+                serviceRequestRepository.findServiceRequestsByCompanyProfileAndStatus(company, "CLOSED")) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        if(dtoOuts.isEmpty()){
+            throw new ApiException("no requests found");
+        }
+
+        return dtoOuts;
+    }
+
+    public List<ServiceRequestDTOOut> getCancelledServiceRequestOfCompany(Integer companyid){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+
+        if (company == null)
+            throw new ApiException("company not found");
+
+        List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
+        for (ServiceRequest request:
+                serviceRequestRepository.findServiceRequestsByCompanyProfileAndStatus(company, "CANCELLED")) {
+            dtoOuts.add(convertToDTOOut(request));
+        }
+
+        if(dtoOuts.isEmpty()){
+            throw new ApiException("no requests found");
+        }
+
+        return dtoOuts;
     }
 
 
