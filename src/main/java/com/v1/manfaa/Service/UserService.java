@@ -52,7 +52,7 @@ public class UserService {
            throw new ApiException("User not found");
        }
        old.setUsername(userDtoIn.getUsername());
-       old.setRole("STARTUP");
+       old.setRole("COMPANY");
        old.setPhone_Number(userDtoIn.getPhone_Number());
        old.setPassword(hash);
        old.setFullName(userDtoIn.getFullName());

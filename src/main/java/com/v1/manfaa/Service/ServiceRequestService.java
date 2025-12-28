@@ -150,7 +150,7 @@ public class ServiceRequestService {
     }
 
 
-    // add logic for barter and either
+    //Todo: add logic for barter and either
 
     public List<ServiceRequestAndBidDTOOut> getAllRequestWithBids(){
         List<ServiceRequestAndBidDTOOut> dtoOuts = new ArrayList<>();
