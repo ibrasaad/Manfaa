@@ -67,7 +67,7 @@ public class CreditTransactionService {
     public void addCreditToUser(Integer userId, Double amount){
         CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(userId);
 
-        if(companyProfile != null){
+        if(companyProfile == null){
             throw new ApiException("company not found");
         }
         companyProfile.getCompanyCredit().setBalance(companyProfile.getCompanyCredit().getBalance() + amount);

@@ -389,10 +389,9 @@ public class ServiceRequestService {
     }
 
 
-    public List<ServiceRequestDTOOut> getOpenServiceRequestOfCompany(Integer companyid){
-        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
-
-        if (company == null)
+    public List<ServiceRequestDTOOut> getOpenServiceRequestOfCompany(Integer companyId){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyId);
+        if (company == null )
             throw new ApiException("company not found");
 
         List<ServiceRequestDTOOut> dtoOuts = new ArrayList<>();
@@ -408,8 +407,8 @@ public class ServiceRequestService {
         return dtoOuts;
     }
 
-    public List<ServiceRequestDTOOut> getClosedServiceRequestOfCompany(Integer companyid){
-        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+    public List<ServiceRequestDTOOut> getClosedServiceRequestOfCompany(Integer userId){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(userId);
 
         if (company == null)
             throw new ApiException("company not found");
@@ -427,8 +426,8 @@ public class ServiceRequestService {
         return dtoOuts;
     }
 
-    public List<ServiceRequestDTOOut> getCancelledServiceRequestOfCompany(Integer companyid){
-        CompanyProfile company = companyProfileRepository.findCompanyProfileById(companyid);
+    public List<ServiceRequestDTOOut> getCancelledServiceRequestOfCompany(Integer userId){
+        CompanyProfile company = companyProfileRepository.findCompanyProfileById(userId);
 
         if (company == null)
             throw new ApiException("company not found");
@@ -448,15 +447,19 @@ public class ServiceRequestService {
 
 
     public ServiceRequest convertToEntity(ServiceRequestDTOIn dtoIn){
-        return new ServiceRequest(null,dtoIn.getTitle(),dtoIn.getDescription(),dtoIn.getDeliverables(),dtoIn.getProposedStartDate(),
-                dtoIn.getProposedEndDate(),null,dtoIn.getTokenAmount(),null,null,null,
+        return new ServiceRequest(null,dtoIn.getTitle(),dtoIn.getDescription(),dtoIn.getDeliverables(),LocalDate.parse(dtoIn.getProposedStartDate()),
+                LocalDate.parse(dtoIn.getProposedEndDate()),null,dtoIn.getTokenAmount(),null,null,null,
                 null,null,null,null,null);
     }
 
     public ServiceRequestDTOOut convertToDTOOut(ServiceRequest request){
+        String categoryBarter = null;
+        if(request.getBarterCategory() != null){
+            categoryBarter = request.getBarterCategory().getName();
+        }
         return new ServiceRequestDTOOut(request.getId(),request.getTitle(),request.getDescription(),request.getDeliverables(),
                 request.getProposedStartDate(),request.getProposedEndDate(),request.getExchangeType(),request.getTokenAmount(),
-                request.getCategory().getName(),request.getBarterCategory().getName());
+                request.getCategory().getName(),categoryBarter);
     }
 
     public ServiceRequestAndBidDTOOut convertToFullDTOOut(ServiceRequest request){

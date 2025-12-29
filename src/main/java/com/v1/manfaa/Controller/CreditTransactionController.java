@@ -23,17 +23,6 @@ public class CreditTransactionController {
         return ResponseEntity.status(200).body(creditTransactionService.getAllTransactions());
     }
 
-    @GetMapping("/get-by-companyId/{companyId}")
-    public ResponseEntity<?> getCompanyTransactionsAdmin(@AuthenticationPrincipal User user,
-                                                                                     @PathVariable Integer companyId) {
-        return ResponseEntity.status(200).body(creditTransactionService.getCompanyTransactionsForAdmin(user.getId(), companyId));
-    }
-
-    @GetMapping("/get-my-transactions")
-    public ResponseEntity<?> getCompanyTransactions(@AuthenticationPrincipal User user) {
-        return ResponseEntity.status(200).body(creditTransactionService.getTransactionsByCompanyId(user.getId()));
-    }
-
     @PostMapping("/add-balance")
     public ResponseEntity<?> addBalance(@AuthenticationPrincipal User user, @Valid @RequestBody CreditAdminDTO dto){
         creditTransactionService.addCreditToUser(dto.getUserId(),dto.getAmount());
@@ -44,5 +33,16 @@ public class CreditTransactionController {
     public ResponseEntity<?> refund(@PathVariable Integer contractId, @AuthenticationPrincipal User user){
         creditTransactionService.refundCredit(contractId);
         return ResponseEntity.status(200).body(new ApiResponse("refund done successfully"));
+    }
+
+    @GetMapping("/get-by-companyId/{companyId}")
+    public ResponseEntity<?> getCompanyTransactionsAdmin(@AuthenticationPrincipal User user,
+                                                         @PathVariable Integer companyId) {
+        return ResponseEntity.status(200).body(creditTransactionService.getCompanyTransactionsForAdmin(user.getId(), companyId));
+    }
+
+    @GetMapping("/get-my-transactions")
+    public ResponseEntity<?> getCompanyTransactions(@AuthenticationPrincipal User user) {
+        return ResponseEntity.status(200).body(creditTransactionService.getTransactionsByCompanyId(user.getId()));
     }
 }

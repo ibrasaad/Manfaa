@@ -25,9 +25,9 @@ public class ServiceRequestDTOIn {
     @NotBlank(message = "deliverables should not be empty")
     private String deliverables;
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in yyyy-MM-dd format")
-    private LocalDate proposedStartDate;
+    private String proposedStartDate;
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in yyyy-MM-dd format")
-    private LocalDate proposedEndDate;
+    private String proposedEndDate;
     @NotNull(message = "token amount should not be null", groups = ValidationGroup1.class)
     @PositiveOrZero(message = "token amount should be zero or positive", groups = ValidationGroup1.class)
     private Double tokenAmount;
