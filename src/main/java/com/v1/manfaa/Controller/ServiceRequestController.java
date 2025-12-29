@@ -89,7 +89,7 @@ public class ServiceRequestController {
                                                           @AuthenticationPrincipal User user) {
         return ResponseEntity.status(200).body(serviceRequestService.getServiceRequestsByCategory(category_id));
     }
-
+    //Todo:get By category barter
     @GetMapping("/get-by-exchange-type/{exchange_type}")
     public ResponseEntity<?> getServiceRequestsByExchangeType(@PathVariable String exchange_type,
                                                               @AuthenticationPrincipal User user) {
@@ -123,15 +123,13 @@ public class ServiceRequestController {
         return ResponseEntity.status(200).body(serviceRequestService.getOpenServiceRequestOfCompany(company_id));
     }
 
-    @GetMapping("/get-company-closed/{company_id}")
-    public ResponseEntity<?> getClosedServiceRequestOfCompany(@PathVariable Integer company_id,
-                                                              @AuthenticationPrincipal User user) {
-        return ResponseEntity.status(200).body(serviceRequestService.getClosedServiceRequestOfCompany(company_id));
+    @GetMapping("/get-company-closed")
+    public ResponseEntity<?> getClosedServiceRequestOfCompany(@AuthenticationPrincipal User user) {
+        return ResponseEntity.status(200).body(serviceRequestService.getClosedServiceRequestOfCompany(user.getId()));
     }
 
-    @GetMapping("/get-company-cancelled/{company_id}")
-    public ResponseEntity<?> getCancelledServiceRequestOfCompany(@PathVariable Integer company_id,
-                                                                 @AuthenticationPrincipal User user) {
-        return ResponseEntity.status(200).body(serviceRequestService.getCancelledServiceRequestOfCompany(company_id));
+    @GetMapping("/get-company-cancelled")
+    public ResponseEntity<?> getCancelledServiceRequestOfCompany(@AuthenticationPrincipal User user) {
+        return ResponseEntity.status(200).body(serviceRequestService.getCancelledServiceRequestOfCompany(user.getId()));
     }
 }

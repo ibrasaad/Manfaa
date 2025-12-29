@@ -28,9 +28,9 @@ public class ServiceBidDTOIn {
     @Positive(message = "hours should be a positive number", groups = ValidationGroup1.class)
     private Double estimatedHours;
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in yyyy-MM-dd format", groups = ValidationGroup1.class)
-    private LocalDate proposedStartDate;
+    private String proposedStartDate;
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in yyyy-MM-dd format", groups = ValidationGroup1.class)
-    private LocalDate proposedEndDate;
+    private String proposedEndDate;
     @NotBlank(message = "exchange type should not be empty", groups = ValidationGroup1.class)
     @Pattern(regexp = "TOKENS|BARTER", message = "exchange Type should be TOKENS , BARTER", groups = ValidationGroup1.class)
     private String exchangeType;

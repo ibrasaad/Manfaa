@@ -53,8 +53,9 @@ public class ServiceBidService {
             throw new ApiException("service request is closed or canceled and can't take any new bids");
         }
 
-        if(dtoIn.getProposedStartDate().isAfter(dtoIn.getProposedEndDate()) ||
-                ChronoUnit.HOURS.between(dtoIn.getProposedStartDate(), dtoIn.getProposedEndDate()) <
+        if(LocalDate.parse(dtoIn.getProposedStartDate()).isAfter(LocalDate.parse(dtoIn.getProposedEndDate())) ||
+                ChronoUnit.HOURS.between(LocalDate.parse(dtoIn.getProposedStartDate()),
+                        LocalDate.parse(dtoIn.getProposedEndDate())) <
                         dtoIn.getEstimatedHours()){
             throw new ApiException("wrong dates expected hours and date don't make sense");
         }
@@ -185,7 +186,7 @@ public class ServiceBidService {
 
     public ServiceBid convertToEntity(ServiceBidDTOIn dtoIn){
         return new ServiceBid(null,dtoIn.getDescription(),null,dtoIn.getDeliverables(),dtoIn.getEstimatedHours(),
-                dtoIn.getProposedStartDate(),dtoIn.getProposedEndDate(),null,dtoIn.getTokenAmount(),null,
+                LocalDate.parse(dtoIn.getProposedStartDate()),LocalDate.parse(dtoIn.getProposedEndDate()),null,dtoIn.getTokenAmount(),null,
                 null,null,null,null);
     }
     public ServiceBidDTOOut convertToDTO(ServiceBid bid){
