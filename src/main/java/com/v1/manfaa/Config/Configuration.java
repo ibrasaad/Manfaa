@@ -65,7 +65,6 @@ public class Configuration {
                         .requestMatchers("/api/v1/users/add").permitAll()
 
                         // admin endpoints
-                        .requestMatchers("/api/v1/service-request/get-requests").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/service-bid/get-all").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/company/get-all","/api/v1/company/get-companies-full").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/contract/get-all").hasAuthority("ADMIN")
@@ -74,6 +73,7 @@ public class Configuration {
 
                         // company endpoints
                         .requestMatchers("/api/v1/service-request/create-request").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/service-request/get-requests").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/company/**").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/service-bid/**").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/contract/**").hasAuthority("COMPANY")
