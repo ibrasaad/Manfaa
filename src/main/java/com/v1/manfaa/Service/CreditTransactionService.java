@@ -3,13 +3,8 @@ package com.v1.manfaa.Service;
 import com.v1.manfaa.Api.ApiException;
 import com.v1.manfaa.DTO.Out.CompanyProfileDTOOut;
 import com.v1.manfaa.DTO.Out.CreditTransactionDTOOut;
-import com.v1.manfaa.Model.CompanyProfile;
-import com.v1.manfaa.Model.ContractAgreement;
-import com.v1.manfaa.Model.CreditTransaction;
-import com.v1.manfaa.Model.User;
-import com.v1.manfaa.Repository.ContractAgreementRepository;
-import com.v1.manfaa.Repository.CreditTransactionRepository;
-import com.v1.manfaa.Repository.UserRepository;
+import com.v1.manfaa.Model.*;
+import com.v1.manfaa.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +17,8 @@ public class CreditTransactionService {
     private final CreditTransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final ContractAgreementRepository contractAgreementRepository;
+    private final CompanyProfileRepository companyProfileRepository;
+    private final CompanyCreditRepository companyCreditRepository;
 
     public List<CreditTransactionDTOOut> getAllTransactions() {
         return convertToDtoOut(transactionRepository.findAll());
@@ -56,6 +53,19 @@ public class CreditTransactionService {
         if(!contractAgreement.getStatus().equalsIgnoreCase("COMPLETED")){
             throw new ApiException("contract is not yet closed");
         }
+        if(!contractAgreement.getExchangeType().equalsIgnoreCase("TOKENS")){
+            throw new ApiException("transaction type is not token based");
+        }
+        if(contractAgreement.getCreditTransaction().getStatus().equalsIgnoreCase("CANCELED")){
+            throw new ApiException("already refunded");
+        }
+
+        CompanyProfile companyProfile = contractAgreement.getServiceRequest().getCompanyProfile();
+        companyProfile.getCompanyCredit().setBalance(companyProfile.getCompanyCredit().getBalance() + contractAgreement.getCreditTransaction().getAmount());
+        contractAgreement.getCreditTransaction().setStatus("CANCELED");
+        transactionRepository.save(contractAgreement.getCreditTransaction());
+        companyCreditRepository.save(companyProfile.getCompanyCredit());
+        companyProfileRepository.save(companyProfile);
     }
 
     public List<CreditTransactionDTOOut> convertToDtoOut(List<CreditTransaction> transactions) {

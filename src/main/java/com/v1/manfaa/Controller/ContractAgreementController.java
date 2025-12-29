@@ -4,10 +4,13 @@ import com.v1.manfaa.Api.ApiResponse;
 import com.v1.manfaa.DTO.In.ContractAgreementDTOIn;
 import com.v1.manfaa.Model.User;
 import com.v1.manfaa.Service.ContractAgreementService;
+import com.v1.manfaa.ValidationGroups.ValidationGroup1;
+import com.v1.manfaa.ValidationGroups.ValidationGroup2;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,30 +26,38 @@ public class ContractAgreementController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createContract(@Valid @RequestBody ContractAgreementDTOIn dto,
+    public ResponseEntity<?> createContract(@Validated(ValidationGroup1.class) @RequestBody ContractAgreementDTOIn dto,
                                             @AuthenticationPrincipal User user) {
         contractAgreementService.createContract(dto, user.getId());
         return ResponseEntity.status(200).body(new ApiResponse("Contract Created Successfully"));
     }
 
-    @DeleteMapping("/delete/{contract_id}")
-    public ResponseEntity<?> deleteContract(@PathVariable Integer contract_id,
+    @DeleteMapping("/delete/{contractId}")
+    public ResponseEntity<?> deleteContract(@PathVariable Integer contractId,
                                             @AuthenticationPrincipal User user) {
-        contractAgreementService.deleteContract(user.getId(), contract_id);
+        contractAgreementService.deleteContract(user.getId(), contractId);
         return ResponseEntity.status(200).body(new ApiResponse("Contract Deleted Successfully"));
     }
 
-    @PostMapping("/accept/{contract_id}")
-    public ResponseEntity<?> acceptContract(@PathVariable Integer contract_id,
+    @PostMapping("/accept/{contractId}")
+    public ResponseEntity<?> acceptContract(@PathVariable Integer contractId,
                                             @AuthenticationPrincipal User user) {
-        contractAgreementService.setAccepted(user.getId(), contract_id);
+        contractAgreementService.setAccepted(user.getId(), contractId);
         return ResponseEntity.status(200).body(new ApiResponse("Contract Accepted Successfully"));
     }
 
-    @PostMapping("/reject/{contract_id}")
-    public ResponseEntity<?> rejectContract(@PathVariable Integer contract_id,
+    @PostMapping("/reject/{contractId}")
+    public ResponseEntity<?> rejectContract(@PathVariable Integer contractId,
                                             @AuthenticationPrincipal User user) {
-        contractAgreementService.setRejected(user.getId(), contract_id);
+        contractAgreementService.setRejected(user.getId(), contractId);
+        return ResponseEntity.status(200).body(new ApiResponse("Contract Rejected Successfully"));
+    }
+
+    @PostMapping("/complete/{contractId}")
+    public ResponseEntity<?> completeContract(@PathVariable Integer contractId,
+                                              @Validated(ValidationGroup2.class) @RequestBody ContractAgreementDTOIn dto,
+                                            @AuthenticationPrincipal User user) {
+        contractAgreementService.complete(user.getId(), contractId,dto);
         return ResponseEntity.status(200).body(new ApiResponse("Contract Rejected Successfully"));
     }
 }

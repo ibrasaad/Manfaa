@@ -4,10 +4,13 @@ import com.v1.manfaa.Api.ApiResponse;
 import com.v1.manfaa.DTO.In.ServiceBidDTOIn;
 import com.v1.manfaa.Model.User;
 import com.v1.manfaa.Service.ServiceBidService;
+import com.v1.manfaa.ValidationGroups.ValidationGroup1;
+import com.v1.manfaa.ValidationGroups.ValidationGroup2;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +27,7 @@ public class ServiceBidController {
 
     @PostMapping("/create/{request_id}")
     public ResponseEntity<?> createBid(@PathVariable Integer request_id,
-                                       @Valid @RequestBody ServiceBidDTOIn dto,
+                                       @Validated(ValidationGroup1.class) @RequestBody ServiceBidDTOIn dto,
                                        @AuthenticationPrincipal User user) {
         serviceBidService.createBid(user.getId(), request_id, dto);
         return ResponseEntity.status(200).body(new ApiResponse("Bid Created Successfully"));
@@ -32,7 +35,7 @@ public class ServiceBidController {
 
     @PutMapping("/update/{bid_id}")
     public ResponseEntity<?> updateBid(@PathVariable Integer bid_id,
-                                       @Valid @RequestBody ServiceBidDTOIn dto,
+                                       @Validated(ValidationGroup1.class) @RequestBody ServiceBidDTOIn dto,
                                        @AuthenticationPrincipal User user) {
         serviceBidService.updateBid(dto, user.getId(), bid_id);
         return ResponseEntity.status(200).body(new ApiResponse("Bid Updated Successfully"));
@@ -54,8 +57,9 @@ public class ServiceBidController {
 
     @PostMapping("/reject/{bid_id}")
     public ResponseEntity<?> rejectBid(@PathVariable Integer bid_id,
+                                       @Validated(ValidationGroup2.class) @RequestBody ServiceBidDTOIn dto,
                                        @AuthenticationPrincipal User user) {
-        serviceBidService.rejectServiceBid(bid_id, user.getId());
+        serviceBidService.rejectServiceBid(bid_id, user.getId(), dto.getNotes());
         return ResponseEntity.status(200).body(new ApiResponse("Bid Rejected Successfully"));
     }
 }

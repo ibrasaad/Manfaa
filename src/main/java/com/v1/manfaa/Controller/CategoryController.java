@@ -6,10 +6,12 @@ import com.v1.manfaa.DTO.In.CategoryDTOIn;
 import com.v1.manfaa.DTO.Out.CategoryDTOOut;
 import com.v1.manfaa.DTO.Out.SkillsDTOOut;
 import com.v1.manfaa.Model.Category;
+import com.v1.manfaa.Model.User;
 import com.v1.manfaa.Service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,19 +29,19 @@ public class CategoryController {
     }
 
     @PostMapping("/add/{userId}")
-    public ResponseEntity<?> addCategory(@PathVariable Integer userId, @RequestBody @Valid  CategoryDTOIn categoryDTOIn) {
+    public ResponseEntity<?> addCategory(@PathVariable Integer userId, @RequestBody @Valid  CategoryDTOIn categoryDTOIn, @AuthenticationPrincipal User user) {
         categoryService.addCategory(userId, categoryDTOIn);
         return ResponseEntity.status(200).body(new ApiResponse("Category added"));
     }
 
     @PutMapping("/update/{userId}/{categoryId}")
-    public ResponseEntity<?> updateCategory(@PathVariable Integer userId, @PathVariable Integer categoryId, @RequestBody @Valid CategoryDTOIn categoryDTOIn) {
+    public ResponseEntity<?> updateCategory(@PathVariable Integer userId, @PathVariable Integer categoryId, @RequestBody @Valid CategoryDTOIn categoryDTOIn , @AuthenticationPrincipal User user) {
         categoryService.updateCategory(userId, categoryId, categoryDTOIn);
         return ResponseEntity.status(200).body(new ApiResponse("Category updated"));
     }
 
     @DeleteMapping("/delete/{userId}/{categoryId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Integer userId, @PathVariable Integer categoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Integer userId, @PathVariable Integer categoryId , @AuthenticationPrincipal User user) {
         categoryService.deleteCategory(userId, categoryId);
         return ResponseEntity.status(200).body(new ApiResponse("Category deleted"));
     }
