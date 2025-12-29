@@ -60,6 +60,7 @@ public class Configuration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
+                        .requestMatchers("/api/v1/payments/card").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/company/register").permitAll()
                         .requestMatchers("/api/v1/users/add").permitAll()
