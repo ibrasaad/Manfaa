@@ -63,7 +63,7 @@ public class Configuration {
                         .requestMatchers("/api/v1/payments/callback").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/company/register").permitAll()
-                        .requestMatchers("/api/v1/users/add").permitAll()
+                        .requestMatchers("/api/v1/users/add").permitAll() // ToDo:test only must be removed before production, leave only the repo and model delete controller, service
 
                         // Admin endpoints
                         .requestMatchers("/api/v1/category/add", "/api/v1/category/update/**", "/api/v1/category/delete/**").hasAuthority("ADMIN")
@@ -76,6 +76,8 @@ public class Configuration {
                         .requestMatchers("/api/v1/service-bid/get-all").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/skills/add", "/api/v1/skills/update/**", "/api/v1/skills/delete/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/subscriptions/get").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/ticket/get-all", "/api/v1/ticket/resolve", "/api/v1/ticket/reject").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/ticket/subscriber/**").hasAuthority("ADMIN")
 
                         // Company endpoints
                         .requestMatchers("/api/v1/credit/get-my-credits").hasAuthority("COMPANY")
@@ -90,10 +92,12 @@ public class Configuration {
                         .requestMatchers("/api/v1/service-bid/create/**", "/api/v1/service-bid/update/**", "/api/v1/service-bid/delete/**", "/api/v1/service-bid/accept/**", "/api/v1/service-bid/reject/**").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/skills/assign-skill/**", "/api/v1/skills/remove-skill/**", "/api/v1/skills/get-skills", "/api/v1/skills/search/**").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/subscriptions/monthly", "/api/v1/subscriptions/yearly", "/api/v1/subscriptions/cancel").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/ticket/add-contract/**", "/api/v1/ticket/add-suggestion", "/api/v1/ticket/add-subscription", "/api/v1/ticket/add-platform").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/ticket/update/**", "/api/v1/ticket/delete/**", "/api/v1/ticket/my-tickets", "/api/v1/ticket/my-tickets/status/**").hasAuthority("COMPANY")
 
                         // Both ADMIN and COMPANY endpoints
                         .requestMatchers("/api/v1/category/get").hasAnyAuthority("ADMIN", "COMPANY")
-                        .requestMatchers("/api/v1/company/update", "/api/v1/company/get-company-full", "/api/v1/company/get-company-id-full/**").hasAnyAuthority("ADMIN", "COMPANY")
+                        .requestMatchers("/api/v1/company/update/**", "/api/v1/company/get-company-full", "/api/v1/company/get-company-id-full/**").hasAnyAuthority("ADMIN", "COMPANY")
                         .requestMatchers("/api/v1/service-request/get-requests").hasAnyAuthority("ADMIN", "COMPANY")
                         .requestMatchers("/api/v1/review/delete/**").hasAnyAuthority("ADMIN", "COMPANY")
                         .requestMatchers("/api/v1/skills/get").hasAnyAuthority("ADMIN", "COMPANY")

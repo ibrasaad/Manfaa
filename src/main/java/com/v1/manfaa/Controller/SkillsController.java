@@ -46,13 +46,13 @@ public class SkillsController {
         return ResponseEntity.status(200).body(new ApiResponse("Skills deleted"));
     }
 
-    @PostMapping("/assign-skill/{skillId}") // user
+    @PutMapping("/assign-skill/{skillId}") // user
     public ResponseEntity<?> assignSkill(@PathVariable Integer skillId, @AuthenticationPrincipal User user){
         skillsService.assignSkill(user.getId(),skillId);
         return ResponseEntity.status(200).body(new ApiResponse("skill added successfully"));
     }
 
-    @PostMapping("/remove-skill/{skillId}") // user
+    @PutMapping("/remove-skill/{skillId}") // user
     public ResponseEntity<?> removeSkill(@PathVariable Integer skillId, @AuthenticationPrincipal User user){
         skillsService.removeSkill(user.getId(),skillId);
         return ResponseEntity.status(200).body(new ApiResponse("skill removed successfully"));

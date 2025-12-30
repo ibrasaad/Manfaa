@@ -48,14 +48,14 @@ public class ServiceBidController {
         return ResponseEntity.status(200).body(new ApiResponse("Bid Deleted Successfully"));
     }
 
-    @PostMapping("/accept/{bid_id}") // user
+    @PutMapping("/accept/{bid_id}") // user
     public ResponseEntity<?> acceptBid(@PathVariable Integer bid_id,
                                        @AuthenticationPrincipal User user) {
         serviceBidService.acceptServiceBid(bid_id, user.getId());
         return ResponseEntity.status(200).body(new ApiResponse("Bid Accepted Successfully"));
     }
 
-    @PostMapping("/reject/{bid_id}") // user
+    @PutMapping("/reject/{bid_id}") // user
     public ResponseEntity<?> rejectBid(@PathVariable Integer bid_id,
                                        @Validated(ValidationGroup2.class) @RequestBody ServiceBidDTOIn dto,
                                        @AuthenticationPrincipal User user) {

@@ -37,6 +37,7 @@ public class ServiceBidService {
         return dtoOuts;
     }
 
+
     public void createBid(Integer company_id, Integer request_id, ServiceBidDTOIn dtoIn){
         CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(company_id);
         ServiceRequest serviceRequest = serviceRequestRepository.findServiceRequestById(request_id);

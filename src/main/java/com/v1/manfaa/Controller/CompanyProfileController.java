@@ -32,15 +32,15 @@ public class CompanyProfileController {
         return ResponseEntity.status(200).body(new ApiResponse("Company Registered Successfully"));
     }
 
-    @PutMapping("/update") // both admin and user
-    public ResponseEntity<?> updateCompanyProfile(@Valid @RequestBody CompanyProfileDTOIn dto,
+    @PutMapping("/update/{companyId}") // both admin and user
+    public ResponseEntity<?> updateCompanyProfile(@PathVariable Integer companyId,@Valid @RequestBody CompanyProfileDTOIn dto,
                                                   @AuthenticationPrincipal User user) {
-        companyService.updateCompanyProfile(user.getId(), dto);
+        companyService.updateCompanyProfile(user.getId(), dto, companyId);
         return ResponseEntity.status(200).body(new ApiResponse("Company Updated Successfully"));
     }
 
-    @DeleteMapping("/delete") // admin
-    public ResponseEntity<?> deleteCompanyProfile(@AuthenticationPrincipal User user) {
+    @DeleteMapping("/delete/{companyId}") // admin
+    public ResponseEntity<?> deleteCompanyProfile(@PathVariable Integer companyId, @AuthenticationPrincipal User user) {
         companyService.deleteCompanyProfile(user.getId());
         return ResponseEntity.status(200).body(new ApiResponse("Company Deleted Successfully"));
     }

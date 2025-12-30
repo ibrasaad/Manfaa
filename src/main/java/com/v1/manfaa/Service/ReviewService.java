@@ -129,15 +129,16 @@ public class ReviewService {
 
     public void deleteReview(Integer userId, Integer reviewId) {
         CompanyProfile company = companyProfileRepository.findCompanyProfileById(userId);
+        User user = userRepository.findUserById(userId);
         Review review = reviewRepository.findReviewById(reviewId);
 
-        if (company == null) {
+        if (company == null && user == null) {
             throw new ApiException("Company not found");
         }
         if (review == null) {
             throw new ApiException("Review not found");
         }
-        if (!review.getReviewerProfile().getId().equals(company.getId())) {
+        if (!review.getReviewerProfile().getId().equals(company.getId()) && !user.getRole().equalsIgnoreCase("ADMIN")) {
             throw new ApiException("You can only delete your own reviews");
         }
 

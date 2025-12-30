@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class CompanyProfile {
     @Id
-    private Integer id;  // Remove @GeneratedValue
+    private Integer id;
 
     @Column(columnDefinition = "varchar(20) not null")
     private String name;
@@ -39,8 +39,8 @@ public class CompanyProfile {
     private Boolean isSubscriber;
 
     @OneToOne
-    @MapsId  // Add @MapsId here
-    @JoinColumn(name = "id")  // Change from user_id to id
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

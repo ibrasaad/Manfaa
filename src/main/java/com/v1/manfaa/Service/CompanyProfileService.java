@@ -69,10 +69,20 @@ public class CompanyProfileService {
         companyCreditRepository.save(companyCredit);
     }
 
-    public void updateCompanyProfile(Integer companyProfileId, CompanyProfileDTOIn dto) {
-        CompanyProfile oldCompany = companyProfileRepository.findCompanyProfileById(companyProfileId);
+    public void updateCompanyProfile(Integer userId, CompanyProfileDTOIn dto, Integer companyId) {
+        CompanyProfile oldCompany = companyProfileRepository.findCompanyProfileById(companyId);
+        User user = userRepository.findUserById(userId);
+
         if (oldCompany == null)
             throw new ApiException("Company Profile was not Found");
+
+        if(user == null ){
+            throw new ApiException("user not found");
+        }
+
+        if(!user.getRole().equalsIgnoreCase("ADMIN") && !companyId.equals(userId)){
+            throw new ApiException("unauthorized to make changes");
+        }
 
         oldCompany.setName(dto.getName());
         oldCompany.setIndustry(dto.getIndustry());

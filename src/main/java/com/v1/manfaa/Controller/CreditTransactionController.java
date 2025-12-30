@@ -29,7 +29,7 @@ public class CreditTransactionController {
         return ResponseEntity.status(200).body(new ApiResponse("funds added successfully"));
     }
 
-    @PostMapping("/refund/{contractId}") // admin
+    @PutMapping("/refund/{contractId}") // admin
     public ResponseEntity<?> refund(@PathVariable Integer contractId, @AuthenticationPrincipal User user){
         creditTransactionService.refundCredit(contractId);
         return ResponseEntity.status(200).body(new ApiResponse("refund done successfully"));
