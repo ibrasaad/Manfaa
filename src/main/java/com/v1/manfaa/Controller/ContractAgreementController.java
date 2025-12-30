@@ -57,12 +57,7 @@ public class ContractAgreementController {
     public ResponseEntity<?> completeContract(@PathVariable Integer contractId,
                                               @Validated(ValidationGroup2.class) @RequestBody ContractAgreementDTOIn dto,
                                             @AuthenticationPrincipal User user) {
-        contractAgreementService.complete(contractId,user.getId(),dto);
-        return ResponseEntity.status(200).body(new ApiResponse("Contract completed Successfully"));
-    }
-
-    @GetMapping("/get-my-contracts")
-    public ResponseEntity<?> getMyContracts(@AuthenticationPrincipal User user){
-        return ResponseEntity.status(200).body(contractAgreementService.getMyContract(user.getId()));
+        contractAgreementService.complete(user.getId(), contractId,dto);
+        return ResponseEntity.status(200).body(new ApiResponse("Contract Rejected Successfully"));
     }
 }

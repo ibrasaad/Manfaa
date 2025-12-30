@@ -1,6 +1,5 @@
 package com.v1.manfaa.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,9 +28,7 @@ public class CreditTransaction {
     private String status;
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    @JsonIgnore
+    @JoinColumn(name = "contract_agreement_id", unique = true)
     private ContractAgreement contractAgreement;
 
     @ManyToOne
