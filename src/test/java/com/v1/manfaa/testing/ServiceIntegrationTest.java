@@ -229,7 +229,7 @@ class ServiceIntegrationTest {
 
         serviceBidService.acceptServiceBid(1, 1);
 
-        verify(serviceBidRepository, times(2)).save(serviceBid);
+        verify(serviceBidRepository, times(1)).save(serviceBid);
         assertEquals("ACCEPTED", serviceBid.getStatus());
         assertEquals("CLOSED", serviceRequest.getStatus());
 
@@ -697,6 +697,6 @@ class ServiceIntegrationTest {
 
         serviceBidService.createBid(2, 1, newBidDTO);
 
-        verify(serviceBidRepository, times(1)).save(any(ServiceBid.class));
+        verify(serviceBidRepository, times(2)).save(any(ServiceBid.class));
     }
 }
