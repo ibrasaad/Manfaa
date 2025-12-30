@@ -126,10 +126,15 @@ public class ServiceBidService {
                 !serviceBid.getServiceRequest().getCompanyProfile().getId().equals(userId)){
             throw new ApiException("service bid not found");
         }
+
         ServiceRequest serviceRequest = serviceBid.getServiceRequest();
         if(!serviceRequest.getStatus().equalsIgnoreCase("OPEN")
                 || !serviceBid.getStatus().equalsIgnoreCase("PENDING")){
             throw new ApiException("service bid or request is already closed");
+        }
+
+        if(serviceBid.getTokenAmount() > companyProfile.getCompanyCredit().getBalance()){
+            throw new ApiException("not enough credit");
         }
 
 
