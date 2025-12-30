@@ -168,6 +168,12 @@ public class CompanyProfileService {
     }
 
     public CompanyFullInfoDTOOut getCompanyById(Integer id){
-        return convertCompanyFull(companyProfileRepository.findCompanyProfileById(id));
+        CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(id);
+        if(companyProfile != null){
+            return convertCompanyFull(companyProfile);
+        }
+        else return new CompanyFullInfoDTOOut(null,null,null,null,
+                null,null,null,null,null);
+
     }
 }
