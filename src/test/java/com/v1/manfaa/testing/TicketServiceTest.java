@@ -334,7 +334,7 @@ class TicketServiceTest {
         TicketResolveDTOIn resolveDTO = new TicketResolveDTOIn(1,"Issue has been resolved");
 
         when(userRepository.findUserById(10)).thenReturn(admin);
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findTicketById(1)).thenReturn(ticket);
         doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
 
         ticketService.resolveTicket(10, resolveDTO);
@@ -383,7 +383,7 @@ class TicketServiceTest {
         resolveDTO.setTicketId(1);
 
         when(userRepository.findUserById(10)).thenReturn(admin);
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findTicketById(1)).thenReturn(ticket);
 
         ApiException exception = assertThrows(ApiException.class, () -> {
             ticketService.resolveTicket(10, resolveDTO);
@@ -401,7 +401,7 @@ class TicketServiceTest {
         resolveDTO.setTicketId(1);
 
         when(userRepository.findUserById(10)).thenReturn(admin);
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findTicketById(1)).thenReturn(ticket);
 
         ApiException exception = assertThrows(ApiException.class, () -> {
             ticketService.resolveTicket(10, resolveDTO);
@@ -420,7 +420,7 @@ class TicketServiceTest {
         rejectDTO.setBody("We cannot process this request");
 
         when(userRepository.findUserById(10)).thenReturn(admin);
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findTicketById(1)).thenReturn(ticket);
         doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
 
         ticketService.rejectTicket(10, rejectDTO);
@@ -448,22 +448,13 @@ class TicketServiceTest {
 
     @Test
     void rejectTicket_ThrowsException_TicketAlreadyResolved() {
-        TicketResolveDTOIn rejectDTO = new TicketResolveDTOIn(2,"1");
-        ticket = new Ticket();
-        ticket.setId(2);
-        ticket.setTitle("Test Ticket");
-        ticket.setBody("Test ticket body");
-        ticket.setCategory("CONTRACT");
-        ticket.setPriority("HIGH");
-        ticket.setCreatedAt(LocalDateTime.now());
-        ticket.setCompanyProfile(companyProfile);
-        ticket.setContractAgreement(contractAgreement);
+        TicketResolveDTOIn rejectDTO = new TicketResolveDTOIn(1,"1");
+
         ticket.setStatus("RESOLVED");
-        ticketRepository.save(ticket);
 
 
         when(userRepository.findUserById(10)).thenReturn(admin);
-        when(ticketRepository.findById(1)).thenReturn(Optional.of(ticket));
+        when(ticketRepository.findTicketById(1)).thenReturn(ticket);
 
         ApiException exception = assertThrows(ApiException.class, () -> {
             ticketService.rejectTicket(10, rejectDTO);

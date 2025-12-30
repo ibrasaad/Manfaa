@@ -218,6 +218,7 @@ public class TicketService {
                 + "Support Team";
 
         emailService.sendEmail(recipientEmail, subject, message);
+        ticketRepository.save(ticket);
     }
 
 
@@ -256,6 +257,7 @@ public class TicketService {
                 + "Support Team";
 
         emailService.sendEmail(recipientEmail, subject, message);
+        ticketRepository.save(ticket);
     }
 
     public List<TicketDTOOut> showMyTickets(Integer userId){

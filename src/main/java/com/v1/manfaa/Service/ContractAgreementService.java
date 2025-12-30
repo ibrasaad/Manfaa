@@ -132,7 +132,7 @@ public class ContractAgreementService {
         CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(user_id);
 
         if(companyProfile == null || contractAgreement == null ||
-                !contractAgreement.getProviderCompanyProfile().getId().equals(user_id) ||
+                !contractAgreement.getProviderCompanyProfile().getId().equals(user_id) &&
                 !contractAgreement.getRequesterCompanyProfile().getId().equals(user_id) ){
             throw new ApiException("contract not found");
         }
@@ -176,7 +176,7 @@ public class ContractAgreementService {
         String recipientEmail = "";
 
         if(companyProfile == null || contractAgreement == null ||
-                !contractAgreement.getProviderCompanyProfile().getId().equals(user_id) ||
+                !contractAgreement.getProviderCompanyProfile().getId().equals(user_id) &&
                 !contractAgreement.getRequesterCompanyProfile().getId().equals(user_id) ){
             throw new ApiException("contract not found");
         }
@@ -222,9 +222,17 @@ public class ContractAgreementService {
             throw new ApiException("contract or user not found");
         }
 
+
+
         if(!contractAgreement.getRequesterCompanyProfile().getId().equals(userId)
-                || !contractAgreement.getProviderCompanyProfile().getId().equals(userId)){
+                && !contractAgreement.getProviderCompanyProfile().getId().equals(userId)){
             throw new ApiException("unauthorized to make changes");
+        }
+
+        if(contractAgreement.getRequesterCompanyProfile().getId().equals(userId)){
+            if(contractAgreement.getExchangeType().equalsIgnoreCase("TOKENS")){
+                contractAgreement.setStatus("COMPLETED");
+            }
         }
 
         if(!contractAgreement.getStatus().equalsIgnoreCase("ACTIVE")){
@@ -274,7 +282,7 @@ public class ContractAgreementService {
         CompanyProfile companyProfile = companyProfileRepository.findCompanyProfileById(userId);
 
         if(companyProfile == null || contractAgreement == null ||
-                !contractAgreement.getProviderCompanyProfile().getId().equals(userId) ||
+                !contractAgreement.getProviderCompanyProfile().getId().equals(userId) &&
                 !contractAgreement.getRequesterCompanyProfile().getId().equals(userId) ){
             throw new ApiException("contract not found");
         }
