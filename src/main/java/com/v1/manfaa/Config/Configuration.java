@@ -94,6 +94,7 @@ public class Configuration {
                         .requestMatchers("/api/v1/subscriptions/monthly", "/api/v1/subscriptions/yearly", "/api/v1/subscriptions/cancel").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/ticket/add-contract/**", "/api/v1/ticket/add-suggestion", "/api/v1/ticket/add-subscription", "/api/v1/ticket/add-platform").hasAuthority("COMPANY")
                         .requestMatchers("/api/v1/ticket/update/**", "/api/v1/ticket/delete/**", "/api/v1/ticket/my-tickets", "/api/v1/ticket/my-tickets/status/**").hasAuthority("COMPANY")
+                        .requestMatchers("/api/v1/ai/**").hasAuthority("COMPANY")
 
                         // Both ADMIN and COMPANY endpoints
                         .requestMatchers("/api/v1/category/get").hasAnyAuthority("ADMIN", "COMPANY")
