@@ -250,62 +250,6 @@ erDiagram
         int amount
         Date create_at
     }
-```
-### System Flow Diagrams
-
-#### Token-Based Service Exchange Flow
-```mermaid
-flowchart TD
-    A[Company A: Create Token Request] --> B{Validate Balance}
-    B -->|Sufficient| C[Request Status: OPEN]
-    B -->|Insufficient| D[Error: Insufficient Tokens]
-    
-    C --> E[Company B: Browse & Filter]
-    E --> F[Company B: Submit Bid]
-    F --> G[Bid Status: PENDING]
-    
-    G --> H[Company A: Review Bids]
-    H --> I{Accept?}
-    I -->|Yes| J[Bid: ACCEPTED]
-    I -->|No| K[Bid: REJECTED]
-    K --> L[Email Notification]
-    
-    J --> M[Request: CLOSED]
-    M --> N[Company A: Create Contract]
-    N --> O[Hold Tokens in Escrow]
-    O --> P[Contract: PENDING]
-    P --> Q[Email to Provider]
-    
-    Q --> R[Company B: Review Contract]
-    R --> S{Accept?}
-    S -->|Yes| T[Both Accepted]
-    S -->|No| U[Contract: CANCELLED]
-    U --> V[Release Tokens]
-    V --> W[Request: OPEN]
-    
-    T --> X[Contract: ACTIVE]
-    X --> Y[Work Begins]
-    
-    Y --> Z[Company B: Mark Delivered]
-    Z --> AA[Company A: Review Work]
-    AA --> AB{Satisfied?}
-    
-    AB -->|Yes| AC[Both Mark Delivered]
-    AB -->|No| AD[Create Ticket]
-    
-    AC --> AE[Contract: COMPLETED]
-    AE --> AF[Transfer Tokens]
-    AF --> AG[Update Balances]
-    AG --> AH[Email: Review Reminders]
-    
-    AH --> AI[Both Submit Reviews]
-    AI --> AJ[Trust Built]
-    
-    style O fill:#ffeb3b
-    style AF fill:#4caf50
-    style V fill:#f44336
-```
-
 #### Barter Service Exchange Flow
 ```mermaid
 flowchart TD
