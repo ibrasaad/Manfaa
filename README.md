@@ -94,31 +94,6 @@ Companies gain access to **Token-based payments or Barter exchanges** with secur
 
 ---
 
-## Roles & Example Endpoints  
-
-### Public  
-- `POST /api/v1/company/register` → Register a company.  
-- `POST /api/v1/auth/login` → User login.  
-
-### Company  
-- `GET /api/v1/service-request/get-all` → Get all service requests.  
-- `POST /api/v1/service-request/token/{companyId}` → Create token-based request.  
-- `POST /api/v1/bid/create/{companyId}/{requestId}` → Submit a bid.  
-- `POST /api/v1/bid/accept/{bidId}/{userId}` → Accept a bid.  
-- `POST /api/v1/contract/create` → Create a contract.  
-- `POST /api/v1/contract/complete/{contractId}` → Mark delivery complete.  
-- `POST /api/v1/reviews/add/{reviewedCompanyId}/{contractId}` → Add review.  
-- `POST /api/v1/subscription/monthly/{companyProfileId}` → Subscribe monthly.  
-
-### Admin  
-- `GET /api/v1/user/get-all` → Get all users.  
-- `DELETE /api/v1/user/delete/{userId}` → Delete a user.  
-- `POST /api/v1/category/add` → Add service category.  
-- `POST /api/v1/skills/add` → Add skill to library.  
-- `POST /api/v1/transaction/refund/{contractId}` → Process credit refund.  
-
----
-
 ## Diagrams
 
 ### System Flow Diagrams
@@ -315,169 +290,186 @@ With clear data modeling, automated email notifications, and robust review syste
 | CompanyProfileController | 7 |
 | CategoryController | 4 |
 | SkillsController | 8 |
-| CompanyCreditController | 1 |
-| ServiceRequestController | 13 |
+| ServiceRequestController | 20 |
 | ServiceBidController | 6 |
 | ContractAgreementController | 6 |
-| ReviewController | 14 |
-| CreditTransactionController | 5 |
+| ReviewController | 11 |
+| TicketController | 15 |
 | SubscriptionController | 4 |
-| TicketController | 4 |
-| **Total** | **78** |
+| CompanyCreditController | 2 |
+| CreditTransactionController | 5 |
+| PaymentController | 2 |
+| **Total** | **100** |
 
 ---
 
 ## AuthController (`/api/v1/auth`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| POST | `/login` | User login (returns JWT token) | mohammed |
-| POST | `/logout` | User logout (clears JWT cookie) | mohammed |
+| Method | Path | Description |
+|---|---|---|
+| POST | `/login` | User login (returns JWT token) |mohammed
+| POST | `/logout` | User logout (clears JWT cookie) |mohammed
 
 ---
 
 
 ## CompanyProfileController (`/api/v1/company`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all company profiles | nawaf |
-| POST | `/register` | Register new company | nawaf |
-| PUT | `/update` | Update company profile | nawaf |
-| DELETE | `/delete` | Delete company profile | nawaf |
-| GET | `/get-companies-full` | Get all companies with full details | nawaf |
-| GET | `/get-company-full` | Get current company full details | nawaf |
-| GET | `/get-company-id-full/{companyId}` | Get company by ID with full details | nawaf |
+| Method | Path | Description |
+|---|---|---|
+| POST | `/register` | Register new company |nawaf
+| GET | `/get-all` | Get all company profiles (brief) | nawaf
+| GET | `/get-companies-full` | Get all companies with full details | nawaf
+| GET | `/get-company-full` | Get authenticated company's full profile | nawaf
+| GET | `/get-company-id-full/{companyId}` | Get company by ID with full details | nawaf
+| PUT | `/update/{companyId}` | Update company profile | nawaf
+| DELETE | `/delete/{companyId}` | Delete company profile (Admin) | nawaf
 
 ---
 
 ## CategoryController (`/api/v1/category`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get` | Get all categories | ibrshim |
-| POST | `/add` | Add category (Admin) | ibrahim |
-| PUT | `/update/{categoryId}` | Update category (Admin) | ibrahim |
-| DELETE | `/delete/{categoryId}` | Delete category (Admin) | ibrahim |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get` | Get all categories | ibrahim
+| POST | `/add` | Add new category (Admin) | ibrahim
+| PUT | `/update/{categoryId}` | Update category (Admin) | ibrahim
+| DELETE | `/delete/{categoryId}` | Delete category (Admin) | ibrahim
 
 ---
 
 ## SkillsController (`/api/v1/skills`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all skills | ibrahim |
-| POST | `/add` | Add skill (Admin) | ibrahim |
-| PUT | `/update/{skillsId}` | Update skill (Admin) | ibrahim |
-| DELETE | `/delete/{skillsId}` | Delete skill (Admin) | ibrahim |
-| POST | `/assign/{userId}/{skillId}` | Assign skill to company | ibrahim |
-| DELETE | `/remove/{userId}/{skillId}` | Remove skill from company | ibrahim |
-| GET | `/company/{companyId}` | Get skills by company | ibrahim |
-| GET | `/search/{keyword}` | Search skills by keyword | ibrahim |
-
----
-
-## CompanyCreditController (`/api/v1/credit`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all company credits | mohammed |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get` | Get all skills | ibrahim
+| GET | `/get-skills` | Get authenticated company's skills | mohammed
+| GET | `/search/{keyword}` | Search skills by keyword | ibrahim
+| POST | `/add` | Add new skill (Admin) | ibrahim
+| PUT | `/update/{skillId}` | Update skill (Admin) |ibrahim
+| DELETE | `/delete/{skillId}` | Delete skill (Admin) | ibrahim
+| PUT | `/assign-skill/{skillId}` | Assign skill to authenticated company | mohammed
+| PUT | `/remove-skill/{skillId}` | Remove skill from authenticated company | mohammed
 
 ---
 
 ## ServiceRequestController (`/api/v1/service-request`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all service requests | mohammed |
-| POST | `/token/{companyId}` | Create token-based request | mohammed |
-| POST | `/barter/{companyId}` | Create barter request | mohammed |
-| POST | `/either/{companyId}` | Create either-type request | mohammed |
-| PUT | `/update/{id}/{requestId}` | Update service request | mohammed |
-| DELETE | `/delete/{requestId}/{id}` | Delete service request | mohammed |
-| GET | `/category/{categoryId}` | Get requests by category | mohammed |
-| GET | `/category/{categoryId}` | Get requests with bids | mohammed |
-| GET | `/category/{categoryId}` | Get requests with bids subscriber | mohammed |
-| GET | `/category/{categoryId}` | Get requests with bids subscriber | mohammed |
-| GET | `/status/{status}` | Get requests by status | mohammed |
-| GET | `/get-by-exchange-type/{exchange_type}` | Get requests by exchange type | mohammed |
-| GET | `/date-range` | Filter by date range | mohammed |
-| GET | `/token-range` | Filter by token range | mohammed |
-| GET | `/sort/{order}` | Sort by token amount | mohammed |
-| GET | `/get-company-open/{company_id}` | getOpenServiceRequestOfCompany | mohammed |
-| GET | `/get-company-closed/{company_id}` | getClosedServiceRequestOfCompany | mohammed |
-| GET | `/get-company-canceld/{company_id}` | getCanceldServiceRequestOfCompany | mohammed |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-requests` | Get all service requests | mohammed
+| GET | `/get-requests-subscriber` | Get requests from subscribed companies | mohammed
+| POST | `/create-token-request` | Create token-based service request | mohammed
+| POST | `/create-barter-request` | Create barter service request | nawaf
+| POST | `/create-either-request` | Create either-type service request | nawaf
+| PUT | `/update/{requestId}` | Update service request | mohammed
+| DELETE | `/delete/{requestId}` | Delete service request | mohammed
+| GET | `/get-with-bids/{requestId}` | Get request with all bids | mohammed
+| GET | `/get-with-bids-subscribers/{requestId}` | Get request with bids (subscribers only) | mohammed
+| GET | `/get-all-with-bids` | Get all requests with their bids | mohammed
+| GET | `/get-company-requests/{companyId}` | Get all requests from specific company | mohammed
+| GET | `/get-company-open/{companyId}` | Get open requests from company | mohammed
+| GET | `/get-company-closed` | Get closed requests from authenticated company | mohammed
+| GET | `/get-company-cancelled` | Get cancelled requests from authenticated company | mohammed
+| GET | `/search` | Search requests by keyword | nawaf
+| GET | `/get-by-category/{categoryId}` | Filter requests by category | nawaf
+| GET | `/get-by-exchange-type/{exchangeType}` | Filter requests by exchange type (TOKENS/BARTER/EITHER) | nawaf
+| GET | `/get-by-date-range` | Filter requests by date range (query params: startDate, endDate) | nawaf
+| GET | `/get-by-token-range` | Filter requests by token amount range (query params: minAmount, maxAmount) | nawaf
+| GET | `/get-sorted-by-token` | Get requests sorted by token amount (query param: order=ASC/DESC) |nawaf
 
+---
 
-
-|
-
----getOpenServiceRequestOfCompany
-
-## ServiceBidController (`/api/v1/bid`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all bids | mohammed |
-| POST | `/create/{companyId}/{requestId}` | Submit bid | mohammed |
-| PUT | `/update/{id}/{bidId}` | Update bid | mohammed |
-| DELETE | `/delete/{id}/{bidId}` | Delete bid | mohammed |
-| POST | `/accept/{bidId}/{userId}` | Accept bid | mohammed |
-| POST | `/reject/{bidId}/{userId}` | Reject bid with notes | mohammed |
+## ServiceBidController (`/api/v1/service-bid`)
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all bids (Admin) | mohammed
+| POST | `/create/{requestId}` | Submit bid for service request | mohammed
+| PUT | `/update/{bidId}` | Update bid details | mohammed
+| DELETE | `/delete/{bidId}` | Delete/withdraw bid | mohammed
+| PUT | `/accept/{bidId}` | Accept a bid (creates contract) | mohammed
+| PUT | `/reject/{bidId}` | Reject a bid with optional notes | mohammed
 
 ---
 
 ## ContractAgreementController (`/api/v1/contract`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all contracts | mohammed |
-| POST | `/create` | Create contract | mohammed |
-| DELETE | `/delete/{contractId}` | Delete pending contract | mohammed |
-| POST | `/accept/{contractId}` | Approve contract | mohammed |
-| POST | `/reject/{contractId}` | Reject contract | mohammed |
-| POST | `/complete/{contractId}` | Mark delivery complete | mohammed |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all contracts (Admin) | mohammed
+| POST | `/create` | Create contract from accepted bid | mohammed
+| PUT | `/accept/{contractId}` | Accept/approve contract (provider) | mohammed
+| PUT | `/reject/{contractId}` | Reject contract | mohammed
+| PUT | `/complete/{contractId}` | Mark contract delivery as complete | mohammed
+| DELETE | `/delete/{contractId}` | Delete pending contract (Admin) | mohammed
 
 ---
 
 ## ReviewController (`/api/v1/reviews`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all reviews (Admin) | ibrahim |
-| GET | `/get/{reviewId}` | Get review by ID | ibrahim |
-| POST | `/add/{reviewedCompanyId}/{contractId}` | Add review | ibrahim |
-| PUT | `/update/{reviewId}` | Update review | ibrahim |
-| DELETE | `/delete/{reviewId}` | Delete review | ibrahim |
-| GET | `/company/{companyId}/received` | Get reviews received | ibrahim |
-| GET | `/company/{companyId}/written` | Get reviews written | ibrahim |
-| GET | `/company/{companyId}/reviewed-contracts` | Get reviewed contracts | ibrahim |
-| GET | `/search/{keyword}` | Search reviews by keyword | ibrahim |
-| GET | `/exchange-type/{exchangeType}` | Filter reviews by exchange type | ibrahim |
-| GET | `/company/{companyId}/best-to-worst` | Sort reviews by rating | ibrahim |
-| POST | `/create-pending-reviews/{contractAgreementId}` | Create pending reviews | ibrahim |
-| POST | `/handle-rejection/{contractAgreementId}` | Handle rejection & refund | ibrahim |
-
----
-
-## CreditTransactionController (`/api/v1/transaction`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all transactions (Admin) | mohammed |
-| GET | `/get-by-companyId/{companyId}` | Get company transactions (Admin) | mohammed |
-| GET | `/get-my-transactions` | Get current company transactions | mohammed |
-| POST | `/add-balance` | Add credit to company (Admin) | mohammed |
-| POST | `/refund/{contractId}` | Process credit refund (Admin) | mohammed |
-
----
-
-## SubscriptionController (`/api/v1/subscription`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all` | Get all subscriptions (Admin) | ibrahim |
-| POST | `/monthly/{companyProfileId}` | Subscribe monthly (120 SAR) | ibrahim |
-| POST | `/yearly/{companyProfileId}` | Subscribe yearly (1,200 SAR) | ibrahim |
-| DELETE | `/cancel/{companyId}/{subscriptionId}` | Cancel subscription | ibrahim |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all reviews (Admin) | ibrahim
+| GET | `/get/{reviewId}` | Get review by ID |
+| POST | `/add/{reviewedCompanyId}/{contractId}` | Submit review for completed contract | ibrahim
+| PUT | `/update/{reviewId}` | Update review | ibrahim
+| DELETE | `/delete/{reviewId}` | Delete review | ibrahim
+| GET | `/company/received` | Get reviews received by authenticated company | ibrahim
+| GET | `/company/written` | Get reviews written by authenticated company | ibrahim
+| GET | `/company/reviewed-contracts` | Get contracts reviewed by authenticated company | ibrahim
+| GET | `/company/best-to-worst` | Get companies sorted by rating (best to worst) | ibrahim
+| GET | `/search/{keyword}` | Search reviews by keyword | ibrahim
+| GET | `/exchange-type/{exchangeType}` | Filter reviews by exchange type | ibrahim
 
 ---
 
 ## TicketController (`/api/v1/ticket`)
-| Method | Path | Description | Name |
-|---|---|---|---|
-| GET | `/get-all/{adminId}` | Get all tickets (Admin) | mohammed |
-| POST | `/create/{companyId}/{contractId}` | Create support ticket | mohammed |
-| PUT | `/update/{ticketId}/{companyId}` | Update ticket | mohammed |
-| DELETE | `/delete/{ticketId}/{companyId}` | Delete ticket | mohammed |
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all support tickets (Admin) | nawaf
+| GET | `/my-tickets` | Get authenticated company's tickets | nawaf
+| GET | `/my-tickets/status/{status}` | Get authenticated company's tickets by status | nawaf
+| POST | `/add-contract/{contractId}` | Create contract-related support ticket | mohammed
+| POST | `/add-suggestion` | Create feature suggestion ticket | mohammed
+| POST | `/add-subscription` | Create subscription-related ticket | mohammed
+| POST | `/add-platform` | Create platform/technical issue ticket | mohammed
+| PUT | `/update/{ticketId}` | Update ticket details | nawaf
+| DELETE | `/delete/{ticketId}` | Delete ticket | nawaf
+| PUT | `/resolve` | Resolve ticket (Admin) | mohammed
+| PUT | `/reject` | Reject ticket (Admin) | mohammed
+| GET | `/subscriber/{isSubscriber}` | Filter tickets by subscriber status (Admin) | mohammed
+| GET | `/subscriber/{isSubscriber}/category/{category}` | Filter by subscriber and category (Admin) | mohammed
+| GET | `/subscriber/{isSubscriber}/priority/{priority}` | Filter by subscriber and priority (Admin) | mohammed
+| GET | `/subscriber/{isSubscriber}/category/{category}/priority/{priority}` | Filter by all three criteria (Admin) | mohammed
+
+---
+
+## SubscriptionController (`/api/v1/subscriptions`)
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get` | Get all subscriptions (Admin) | ibrahim
+| POST | `/monthly` | Create monthly subscription (120 SAR) | ibrahim
+| POST | `/yearly` | Create yearly subscription (1,200 SAR) | ibrahim
+| PUT | `/cancel` | Cancel active subscription | ibrahim
+
+---
+
+## CompanyCreditController (`/api/v1/credit`)
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all company credits (Admin) | nawaf
+| GET | `/get-my-credits` | Get authenticated company's credit balance | nawaf
+
+---
+
+## CreditTransactionController (`/api/v1/transaction`)
+| Method | Path | Description |
+|---|---|---|
+| GET | `/get-all` | Get all credit transactions (Admin) | nawaf
+| GET | `/get-my-transactions` | Get authenticated company's transactions | nawaf
+| GET | `/get-by-companyId/{companyId}` | Get transactions for specific company (Admin) | nawaf
+| POST | `/add-balance` | Add credit balance to company (Admin) | mohammed
+| PUT | `/refund/{transactionId}` | Process credit refund (Admin) | mohammed
+
+---
+
+## PaymentController (`/api/v1/payments`)
+| Method | Path | Description |
+|---|---|---|
+| POST | `/pay` | Process payment via payment gateway | mohammed & ibarhim
+| GET | `/callback` | Handle payment gateway callback/webhook | mohammed & ibarhim
 
 ---
