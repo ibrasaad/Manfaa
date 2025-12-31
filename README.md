@@ -98,63 +98,7 @@ Companies gain access to **Token-based payments or Barter exchanges** with secur
 
 ### Database Schema
 ```mermaid
-erDiagram
-    User ||--o{ subscription : has
-    User ||--o{ company_profile : creates
-    User ||--o{ Payment : makes
-    
-    User {
-        int id PK
-        varchar(254) username
-        varchar(254) password
-        varchar(254) email
-        varchar(50) fullname
-        varchar(50) phone_number
-        varchar(50) role
-    }
-    
-    subscription {
-        int id PK
-        int company_profile_id FK
-        timestamp start_date
-        timestamp end_date
-        boolean is_active
-    }
-    
-    subscription ||--|| company_profile : "belongs to"
-    
-    company_credit {
-        int id PK
-        int company_profile_id FK
-        int balance
-        int total_earned
-        int total_spent
-    }
-    
-    skills {
-        int id PK
-        varchar(30) name
-        text description "max 400"
-    }
-    
-    company_profile ||--o{ skills : requires
-    
-    company_profile {
-        int id PK
-        varchar(100) company_name
-        text description
-        varchar(100) industry
-        varchar(50) size
-    }
-    
-    Payment {
-        int id PK
-        int user_id FK
-        decimal amount
-        varchar(50) currency
-        text description
-        timestamp created_at
-    }
+
 ```
 #### Contract Lifecycle
 ```mermaid
@@ -224,6 +168,8 @@ stateDiagram-v2
 ### Links
 
 - [🎨 Figma Design](https://www.figma.com/site/3bPA8IWIxBTUWX803YicFz/Manafaah?node-id=0-1&p=f&t=eFcKHpnWZnGD9ogl-0)
+- - [ Postman ](https://documenter.getpostman.com/view/46904242/2sBXVbJZbv) 
+
 
 ---
 
