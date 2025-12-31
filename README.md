@@ -306,7 +306,7 @@ With clear data modeling, automated email notifications, and robust review syste
 ## AuthController (`/api/v1/auth`)
 | Method | Path | Description |
 |---|---|---|
-| POST | `/login` | User login (returns JWT token) |mohammed
+| POST | `/login` | User login (returns JWT token) |mohammed|
 | POST | `/logout` | User logout (clears JWT cookie) |mohammed
 
 ---
