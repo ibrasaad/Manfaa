@@ -235,7 +235,7 @@ With clear data modeling, automated email notifications, and robust review syste
 | PUT | `/update/{skillId}` | Update skill (Admin) (ibrahim) |
 | DELETE | `/delete/{skillId}` | Delete skill (Admin) (ibrahim) | 
 
-
+---
 
 ## ReviewController (`/api/v1/reviews`)
 | Method | Path | Description |
@@ -254,7 +254,6 @@ With clear data modeling, automated email notifications, and robust review syste
 
 ---
 
----
 
 ## SubscriptionController (`/api/v1/subscriptions`)
 | Method | Path | Description |
@@ -266,17 +265,9 @@ With clear data modeling, automated email notifications, and robust review syste
 
 ---
 
-
----
-
- 
-
----
-
 ## PaymentController (`/api/v1/payments`)
 | Method | Path | Description |
 |---|---|---|
 | POST | `/pay` | Process payment via payment gateway (mohammed & ibarhim) | 
 | GET | `/callback` | Handle payment gateway callback/webhook (mohammed & ibarhim) | 
 
----
